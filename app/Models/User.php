@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -23,6 +26,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'api_token'
     ];
 
     /**
@@ -33,6 +37,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'api_token'
     ];
 
     /**
@@ -43,6 +48,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function boot(){
+        parent::boot();
+        static::creating(function($user){
+            $user->id = Str::uuid();
+            $user->password = Hash::make($user->password);
+        });
+        static::updating(function($user){
+            $user->updated_by = Auth::id();
+            $user->updated_at = Carbon::now();
+        });
+        static::deleting(function($user){
+            $user->deleted_by = Auth::id();
+        });
+    }
 
     public function sensors(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
