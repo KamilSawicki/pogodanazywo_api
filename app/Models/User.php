@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -49,6 +50,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @var mixed|string
+     */
     public static function boot(){
         parent::boot();
         static::creating(function($user){
@@ -64,7 +68,7 @@ class User extends Authenticatable
         });
     }
 
-    public function sensors(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function sensors(): HasMany
     {
         return $this->hasMany(Sensor::class);
     }

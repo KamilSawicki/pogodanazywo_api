@@ -19,7 +19,9 @@ class ApiAuthenticate
     public function handle(Request $request, Closure $next)
     {
         try {
-            $user = AuthService::authenticate($request->bearerToken());
+            $apiToken = $request->cookie('api_token');
+            $userId = $request->cookie('user_id');
+            $user = AuthService::authenticate($apiToken, $userId);
             $request->user = $user;
             return $next($request);
         } catch (\Exception $e) {
