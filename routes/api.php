@@ -20,12 +20,25 @@ Route::middleware('apiAuth')->get('/user', function (Request $request) {
 
 Route::middleware('apiAuth')->group(function(){
     Route::get('auth/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+
+    Route::prefix('/sensor')->group(function(){
+        Route::get('/', [\App\Http\Controllers\SensorController::class, 'index']);
+        Route::get('/{id}', [\App\Http\Controllers\SensorController::class, 'get']);
+        Route::post('/', [\App\Http\Controllers\SensorController::class, 'store']);
+        Route::put('/{id}', [\App\Http\Controllers\SensorController::class, 'update']);
+        Route::delete('/{id}', [\App\Http\Controllers\SensorController::class, 'delete']);
+    });
+
+
 });
 
 Route::post('auth/login', [\App\Http\Controllers\AuthController::class, 'login']);
 Route::post('auth/register', [\App\Http\Controllers\AuthController::class, 'register']);
 
-Route::get('/', [\App\Http\Controllers\TestController::class, 'index']);
-Route::get('/{uuid}', [\App\Http\Controllers\TestController::class, 'find']);
-Route::delete('/{uuid}', [\App\Http\Controllers\TestController::class, 'delete']);
-Route::post('/', [\App\Http\Controllers\TestController::class, 'create']);
+
+Route::prefix('/test')->group(function(){
+    Route::get('/', [\App\Http\Controllers\TestController::class, 'index']);
+    Route::get('/{uuid}', [\App\Http\Controllers\TestController::class, 'find']);
+    Route::delete('/{uuid}', [\App\Http\Controllers\TestController::class, 'delete']);
+    Route::post('/', [\App\Http\Controllers\TestController::class, 'create']);
+});

@@ -19,9 +19,6 @@ class Measurement extends Model
 
     public static function boot() {
         parent::boot();
-        static::creating(function($entity){
-            $entity->id = Str::uuid();
-        });
         static::updating(function($entity){
             $entity->updated_by = Auth::id();
             $entity->updated_at = Carbon::now();
