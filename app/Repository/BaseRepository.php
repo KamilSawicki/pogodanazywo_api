@@ -44,7 +44,7 @@ class BaseRepository
      * @throws Exception
      */
     public function update(array $attributes, string|int $id) : Model {
-        $entity = $this->find($id);
+        $entity = $this->model->find($id);
         if (is_null($entity)) {
             throw new Exception(__('entity_exception.not_found'));
         }
