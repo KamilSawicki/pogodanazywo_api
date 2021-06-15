@@ -32,6 +32,8 @@ Route::middleware('apiAuth')->group(function(){
 
 });
 
+Route::middleware('sensorAuth')->post('/store', [\App\Http\Controllers\MeasurementController::class, 'store']);
+
 Route::post('auth/login', [\App\Http\Controllers\AuthController::class, 'login']);
 Route::post('auth/register', [\App\Http\Controllers\AuthController::class, 'register']);
 

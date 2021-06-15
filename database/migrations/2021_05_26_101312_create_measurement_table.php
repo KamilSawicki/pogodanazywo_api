@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +23,7 @@ class CreateMeasurementTable extends Migration
             $table->foreignUuid('sensor_id')->nullable()->references('id')->on('sensors');
             $table->foreignUuid('deleted_by')->nullable()->references('id')->on('users');
             $table->softDeletes();
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->default(Carbon::now());
         });
     }
 

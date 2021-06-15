@@ -15,6 +15,11 @@ use Illuminate\Validation\ValidationException;
 class SensorService
 {
     private SensorRepository $_sr;
+    private array $validatorRules=[
+        'above_see' => 'required|integer|min:0|max:1000',
+        'city' => 'required|string|min:3',
+        'zip_code' => 'required|regex:/\b\d{5}\b/'
+    ];
 
     public function __construct() {
         $this->_sr = new SensorRepository(new Sensor());
@@ -39,10 +44,7 @@ class SensorService
         $api_key = Str::random(32);
         $validator = Validator::make(
             $attributes,
-            [
-                'city' => 'required|string|min:3',
-                'zip_code' => 'required|regex:/\b\d{5}\b/'
-            ]
+            $this->validatorRules
         );
 
         if (!$validator->fails()) {
@@ -64,10 +66,7 @@ class SensorService
     public function update(array $attributes, string $id) : Sensor {
         $validator = Validator::make(
             $attributes,
-            [
-                'city' => 'required|string|min:3',
-                'zip_code' => 'required|regex:/\b\d{5}\b/'
-            ]
+            $this->validatorRules
         );
 
         if (!$validator->fails()) {
@@ -83,5 +82,20 @@ class SensorService
      */
     public function delete(string $id) : void {
         $this->_sr->delete($id);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function sensorAuthenticate(?string $id, ?string $api_key) {
+        if (is_null($id) || is_null($api_key)) {
+            throw new Exception(__('entity_exception.not_found'));
+        }
+        else {
+            $sensor = $this->_sr->find($id);
+            if (Hash::check($api_key, $sensor->api_key)) {
+                return $sensor;
+            }
+        }
     }
 }

@@ -18,6 +18,7 @@ class CreateSensorsTable extends Migration
             $table->text('city');
             $table->text('zip_code');
             $table->text('api_key');
+            $table->integer('above_see');
             $table->foreignUuid('created_by')->nullable()->references('id')->on('users');
             $table->foreignUuid('updated_by')->nullable()->references('id')->on('users');
             $table->foreignUuid('delete_by')->nullable()->references('id')->on('users');
