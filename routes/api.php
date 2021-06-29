@@ -28,8 +28,6 @@ Route::middleware('apiAuth')->group(function(){
         Route::put('/{id}', [\App\Http\Controllers\SensorController::class, 'update']);
         Route::delete('/{id}', [\App\Http\Controllers\SensorController::class, 'delete']);
     });
-
-
 });
 
 Route::middleware('sensorAuth')->post('/store', [\App\Http\Controllers\MeasurementController::class, 'store']);
@@ -37,10 +35,5 @@ Route::middleware('sensorAuth')->post('/store', [\App\Http\Controllers\Measureme
 Route::post('auth/login', [\App\Http\Controllers\AuthController::class, 'login']);
 Route::post('auth/register', [\App\Http\Controllers\AuthController::class, 'register']);
 
-
-Route::prefix('/test')->group(function(){
-    Route::get('/', [\App\Http\Controllers\TestController::class, 'index']);
-    Route::get('/{uuid}', [\App\Http\Controllers\TestController::class, 'find']);
-    Route::delete('/{uuid}', [\App\Http\Controllers\TestController::class, 'delete']);
-    Route::post('/', [\App\Http\Controllers\TestController::class, 'create']);
-});
+Route::get('/history/day/{id}', [\App\Http\Controllers\HomeController::class, 'home']);
+Route::get('/history/day/', [\App\Http\Controllers\HomeController::class, 'home']);

@@ -30,6 +30,7 @@ class SensorFactory extends Factory
             'id' => Str::uuid(),
             'city' => $this->faker->city,
             'zip_code' => $this->faker->postcode,
+            'above_see' => rand(0, 100),
             'api_key' => Str::random(),
             'created_by' => $userId,
             'updated_by' => $userId

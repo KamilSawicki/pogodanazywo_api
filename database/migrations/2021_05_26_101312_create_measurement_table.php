@@ -23,7 +23,7 @@ class CreateMeasurementTable extends Migration
             $table->foreignUuid('sensor_id')->nullable()->references('id')->on('sensors');
             $table->foreignUuid('deleted_by')->nullable()->references('id')->on('users');
             $table->softDeletes();
-            $table->timestamp('created_at')->default(Carbon::now());
+            $table->timestamps();
         });
     }
 

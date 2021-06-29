@@ -12,4 +12,8 @@ class SensorRepository extends BaseRepository
     {
         parent::__construct($model);
     }
+
+    public function randomId() : string {
+        return Sensor::all()->random()->id;
+    }
 }

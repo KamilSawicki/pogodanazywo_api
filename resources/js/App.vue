@@ -8,11 +8,7 @@
 
 <script>
 export default {
-    watch: {
-        $route() {
-            $("#navbarCollapse").collapse("hide");
-        },
-    },
+
 };
 </script>
 

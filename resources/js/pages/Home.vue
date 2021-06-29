@@ -8,54 +8,53 @@
             </div>
         </div>
         <div class="charts">
-            <apexchart width="500" type="area" :options="options" :series="series"></apexchart>
+            <Chart
+                v-if="history.chartReady"
+                :labels="history.labels"
+                :humidity="history.humidity"
+                :pressure="history.pressure"
+                :temperature="history.temperature"
+            />
         </div>
     </div>
 </template>
 
 <script>
+import Chart from "../components/Chart"
+import axios from 'axios'
+
 export default {
+    components: {Chart},
     data: () => {
         return {
             city: 'Grabownica Starzeńska',
             actual: {
                 temperature: 25
             },
-            options: {
-                legend: {
-                    show: false,
-                }
-            },
-            series: [
-                {
-                    data: [
-                        {
-                            x: new Date('2021-06-15 14:30').getTime(),
-                            y: 25
-                        },
-                        {
-                            x: new Date('2021-06-15 15:00').getTime(),
-                            y: 26
-                        },
-                        {
-                            x: new Date('2021-06-15 15:30').getTime(),
-                            y: 26
-                        },
-                        {
-                            x: new Date('2021-06-15 16:00').getTime(),
-                            y: 24
-                        },
-                        {
-                            x: new Date('2021-06-15 16:30').getTime(),
-                            y: 23
-                        },
-                        {
-                            x: new Date('2021-06-15 17:00').getTime(),
-                            y: 23
-                        }
-                    ]
-                }
-            ],
+            history: {
+                labels: [],
+                pressure: [],
+                humidity: [],
+                temperature: [],
+                chartReady: false
+            }
+        }
+    },
+    mounted() {
+        this.fetchData()
+    },
+    methods: {
+        async fetchData(){
+            const response = await axios.get('/api/history/day/')
+
+            this.history.labels = []
+            this.history.pressure = []
+            this.history.humidity = []
+            this.history.temperature = []
+
+            this.history = response.data.history
+
+            this.history.chartReady = true
         }
     }
 }
@@ -71,7 +70,14 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.value{
     font-size: 6em;
+}
+
+.unit{
+    font-size: 3em;
 }
 
 .city {

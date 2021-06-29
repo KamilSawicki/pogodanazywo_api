@@ -15,6 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(10)->create();
         \App\Models\Sensor::factory(30)->create();
-        \App\Models\Measurement::factory(200)->create();
+        \App\Models\Measurement::factory(20000)->create();
     }
 }
