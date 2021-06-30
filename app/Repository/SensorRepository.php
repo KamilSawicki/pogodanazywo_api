@@ -5,6 +5,7 @@ namespace App\Repository;
 
 
 use App\Models\Sensor;
+use Illuminate\Database\Eloquent\Collection;
 
 class SensorRepository extends BaseRepository
 {
@@ -21,13 +22,17 @@ class SensorRepository extends BaseRepository
      * @param $id
      * @return array|\Illuminate\Database\Eloquent\Collection
      */
-    public function getByUser($id): array|\Illuminate\Database\Eloquent\Collection
+    public function getByUser($id): array|Collection
     {
-        return Sensor::all()->where('created_by', $id);
+        return Sensor::all()->where('created_by', $id)->sortBy('city');
     }
 
-    public function getOtherByUser($id): array|\Illuminate\Database\Eloquent\Collection
+    public function getOtherByUser($id): array|Collection
     {
-        return Sensor::all()->where('created_by', '<>', $id);
+        return Sensor::all()->where('created_by', '<>', $id)->sortBy('city');
+    }
+
+    public function all() : Collection{
+        return parent::all()->sortBy('city');
     }
 }

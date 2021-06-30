@@ -1,12 +1,8 @@
 <?php
-
-
 namespace App\Repository;
-
 
 use App\Models\Measurement;
 use Exception;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class MeasurementRepository extends BaseRepository
@@ -32,11 +28,11 @@ class MeasurementRepository extends BaseRepository
                 DB::raw('round(avg(humidity), 2) as humidity'),
                 DB::raw('round(avg(pressure), 2) as pressure'),
                 DB::raw('round(avg(temperature), 2) as temperature'),
-                DB::raw('hour(date) as date'),
+                DB::raw('concat(date(date), " ", lpad(hour(date), 2, 0), "") as date'),
             ])
             ->where('sensor_id', $id)
-            ->groupBy(DB::raw('hour(date)'))
-            ->orderBy('date')
+            ->groupBy(DB::raw('date'))
+            ->orderByDesc('date')
             ->limit($limit)
             ->get()
             ->reverse();
@@ -55,7 +51,7 @@ class MeasurementRepository extends BaseRepository
                 DB::raw('round(avg(humidity), 2) as humidity'),
                 DB::raw('round(avg(pressure), 2) as pressure'),
                 DB::raw('round(avg(temperature), 2) as temperature'),
-                DB::raw('concat(date(date)) as date')
+                DB::raw('date(date) as date')
             ])
             ->where('sensor_id', $id)
             ->groupBy('date')

@@ -1,5 +1,6 @@
 <template>
     <div class="home">
+        <h1>{{city}}</h1>
         <ActualTiles v-bind:temperature="actual.temperature"
                      v-bind:humidity="actual.humidity"
                      v-bind:pressure="actual.pressure">
@@ -34,6 +35,13 @@
     height: 100%;
 }
 
+h1{
+    text-align: center;
+    letter-spacing: .75rem;
+    color: #fff;
+    line-height: 0em;
+}
+
 .range-switch {
     display: flex;
     color: #fff;
@@ -51,6 +59,7 @@
     border-top: 2px solid #fff;
     border-bottom: 2px solid #fff;
     padding: .5rem 0;
+    cursor: pointer;
 }
 
 .range:first-child {
@@ -99,6 +108,7 @@ export default {
         return {
             range: 1,
             ready: false,
+            city: '...',
             measurements: {
                 labels: null,
                 temperature: null,
@@ -173,6 +183,8 @@ export default {
             axios.get(`/api/weather/${this.$store.state.sensor}`)
                 .then(r => {
                     this.ready = false
+
+                    this.city = r.data.city
 
                     this.measurements.labels = r.data.history.labels
 

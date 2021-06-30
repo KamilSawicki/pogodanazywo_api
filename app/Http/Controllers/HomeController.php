@@ -20,11 +20,13 @@ class HomeController extends Controller
     public function home(?string $id = null): JsonResponse{
         try {
             $id = $id ?? $this->_ss->getExampleSensorId();
+            $sensor = $this->_ss->get($id);
             $actual = $this->_ms->getLatestMeasurement($id);
             $history = $this->_ms->getLastDay($id);
             return response()->json([
                 'history' => $history,
-                'actual' => $actual
+                'actual' => $actual,
+                'city' => $sensor->city
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

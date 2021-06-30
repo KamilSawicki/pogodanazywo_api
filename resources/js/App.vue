@@ -53,6 +53,7 @@ body {
 a {
     color: unset;
     text-decoration: none;
+    cursor: pointer;
 }
 .delay {
     animation-delay: .5s;
@@ -83,6 +84,7 @@ a {
     font-size: 1.25em;
     width: 100%;
     padding: .5rem;
+    cursor: pointer;
 }
 .btn:focus {
     outline: none;

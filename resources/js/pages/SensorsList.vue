@@ -5,13 +5,13 @@
             <router-link :to="{name: 'new-sensor'}" class="new-sensor">Dodaj</router-link>
         </div>
         <div v-if="sensors.hasOwnProperty('user') && $store.state.isAuthenticated">
-            <table v-if="sensors.user.length!=0">
+            <table v-if="sensors.user.length!==0">
                 <tr v-for="sensor in sensors.user" v-bind:key="sensor.id" @click="selectSensor(sensor.id)">
                     <td>{{ sensor.city }}</td>
                     <td>Wybierz</td>
                 </tr>
             </table>
-            <div class="no-sensors" v-if="sensors.user.length==0">Nie posiadasz jeszcze własnych czujników</div>
+            <div class="no-sensors" v-if="sensors.user.length===0">Nie posiadasz jeszcze własnych czujników</div>
         </div>
         <h1>Inne czujniki</h1>
         <table>
