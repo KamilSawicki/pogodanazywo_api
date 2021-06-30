@@ -1,12 +1,14 @@
-require('./bootstrap');
+require('./bootstrap')
 
-window.Vue = require('vue').default;
+window.Vue = require('vue').default
 
-import router from './router/index';
-import App from './App.vue';
+import router from './router/index'
+import App from './App.vue'
+import store from './store'
 
-const app = new Vue({
+new Vue({
     router,
-    el: '#app',
+    store,
     render: h => h(App)
-});
+}).$mount('#app')
+

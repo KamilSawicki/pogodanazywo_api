@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\Sensor;
 use App\Repository\SensorRepository;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -15,6 +16,7 @@ use Illuminate\Validation\ValidationException;
 class SensorService
 {
     private SensorRepository $_sr;
+
     private array $validatorRules=[
         'above_see' => 'required|integer|min:0|max:1000',
         'city' => 'required|string|min:3',
@@ -26,7 +28,14 @@ class SensorService
     }
 
     public function getAll() : array {
-        return $this->_sr->all()->toArray();
+        if(Auth::check()){
+            return [
+                'user' => $this->_sr->getByUser(Auth::id())->toArray(),
+                'all' => $this->_sr->getOtherByUser(Auth::id())->toArray()
+            ];
+        }
+        else
+            return ['all' => $this->_sr->all()->toArray()];
     }
 
     /**
@@ -97,5 +106,9 @@ class SensorService
                 return $sensor;
             }
         }
+    }
+
+    public function getExampleSensorId(): string {
+        return $this->_sr->firstId();
     }
 }

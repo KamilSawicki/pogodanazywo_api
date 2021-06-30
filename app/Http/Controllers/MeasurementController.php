@@ -26,4 +26,40 @@ class MeasurementController extends Controller
             return response()->json($e->getMessage(), 400);
         }
     }
+
+    public function lastDay($id): JsonResponse {
+        try {
+            $res = $this->_ms->getLastDay($id);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage(), 404);
+        }
+        return response()->json($res);
+    }
+
+    public function lastWeek($id): JsonResponse {
+        try {
+            $res = $this->_ms->getLastWeek($id);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage(), 404);
+        }
+        return response()->json($res);
+    }
+
+    public function lastMonth($id): JsonResponse {
+        try {
+            $res = $this->_ms->getLastMonth($id);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage(), 404);
+        }
+        return response()->json($res);
+    }
+
+    public function lastYear($id): JsonResponse {
+        try {
+            $res = $this->_ms->getLastYear($id);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage(), 404);
+        }
+        return response()->json($res);
+    }
 }

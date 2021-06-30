@@ -17,7 +17,7 @@ class SensorController extends Controller
 
     public function index() : JsonResponse {
         $sensors = $this->_ss->getAll();
-        return response()->json(['data' => $sensors]);
+        return response()->json(['sensors' => $sensors]);
     }
 
     public function get(string $id) : JsonResponse {

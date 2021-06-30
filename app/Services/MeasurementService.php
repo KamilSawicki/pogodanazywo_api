@@ -55,21 +55,91 @@ class MeasurementService
         $this->_mr->storeMultiple($validatedData);
     }
 
-    public function getLastDay(?string $id) : array {
-        $measurements = $this->_mr->getByHour($id ?? $this->_sr->randomId(), 24);
+    /**
+     * @throws Exception
+     */
+    public function getLastDay(string $id) : array {
+        $measurements = $this->_mr->getByHour($id, 24);
+
+        return $this->buildArray($measurements);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getLastWeek(string $id) : array {
+        $measurements = $this->_mr->getByDay($id, 7);
+
+        return $this->buildArray($measurements);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getLastMonth(string $id) : array {
+        $measurements = $this->_mr->getByDay($id, 30);
+
+        return $this->buildArray($measurements);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getLastYear(string $id) : array {
+        $measurements = $this->_mr->getByDay($id, 365);
+
+        return $this->buildArray($measurements);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getLatestMeasurement(string $id) : array {
+        $measurements = $this->_mr->getLatest($id);
+        if(is_null($measurements)){
+            throw new Exception('sensor_not_found');
+        }
+        else{
+            return [
+                'temperature' => $measurements->temperature,
+                'humidity' => $measurements->humidity,
+                'pressure' => $measurements->pressure
+            ];
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function buildArray($data) : array{
+        if($data==null){
+            throw new Exception('no_measurements');
+        }
 
         $result = [
             'labels' => [],
             'humidity' => [],
             'pressure' => [],
-            'temperature' => []
+            'temperature' => [],
+            'min_humidity' => [],
+            'min_pressure' => [],
+            'min_temperature' => [],
+            'max_humidity' => [],
+            'max_pressure' => [],
+            'max_temperature' => [],
         ];
 
-        foreach($measurements as $m) {
-            $result['labels'][] = $m['date'];
-            $result['humidity'][] = $m['humidity'];
-            $result['pressure'][] = $m['pressure'];
-            $result['temperature'][] = $m['temperature'];
+        foreach($data as $m) {
+            $result['labels'][] = $m->date;
+            $result['humidity'][] = $m->humidity;
+            $result['pressure'][] = $m->pressure;
+            $result['temperature'][] = $m->temperature;
+            $result['min_humidity'][] = $m->min_humidity;
+            $result['min_pressure'][] = $m->min_pressure;
+            $result['min_temperature'][] = $m->min_temperature;
+            $result['max_humidity'][] = $m->max_humidity;
+            $result['max_pressure'][] = $m->max_pressure;
+            $result['max_temperature'][] = $m->max_temperature;
         }
 
         return $result;

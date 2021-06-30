@@ -18,9 +18,16 @@ class HomeController extends Controller
     }
 
     public function home(?string $id = null): JsonResponse{
-        $history = $this->_ms->getLastDay($id);
-        return response()->json([
-            'history' => $history
-        ]);
+        try {
+            $id = $id ?? $this->_ss->getExampleSensorId();
+            $actual = $this->_ms->getLatestMeasurement($id);
+            $history = $this->_ms->getLastDay($id);
+            return response()->json([
+                'history' => $history,
+                'actual' => $actual
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

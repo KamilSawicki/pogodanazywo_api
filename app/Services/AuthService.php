@@ -31,7 +31,7 @@ class AuthService
             ];
         }
         else{
-            throw new Exception(__('auth_exception.credentials_error'));
+            throw new Exception('login_credentials_error');
         }
     }
 
@@ -58,7 +58,6 @@ class AuthService
             $data,
             [
                 'email' => 'required|email|unique:users',
-                'name' => 'required|string|min:5',
                 'password' => 'required|min:8',
             ]
         );

@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ApiAuthenticate
+class OptionalApiAuthenticate
 {
     /**
      * Handle an incoming request.
@@ -22,12 +22,14 @@ class ApiAuthenticate
         try {
             $apiToken = $request->cookie('api_token');
             $userId = $request->cookie('user_id');
-            $user = AuthService::authenticate($apiToken, $userId);
-            Auth::login($user);
+            if(!is_null($apiToken) && !is_null($userId)) {
+                $user = AuthService::authenticate($apiToken, $userId);
+                Auth::login($user);
+            }
             $request->user = $user;
             return $next($request);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'unauthorized'], 401);
+            return $next($request);
         }
     }
 }
