@@ -155,7 +155,14 @@ export default {
         makeRequest(url) {
             axios.get(url)
                 .then(r => {
-                    this.measurements.labels = r.data.labels
+                    this.measurements.labels = r.data.labels.map(r => {
+                        const date = new Date(r)
+                        if(this.range===1) {
+                            return date.getHours()
+                        }else {
+                            return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+                        }
+                    })
 
                     this.measurements.humidity = r.data.humidity
                     this.measurements.pressure = r.data.pressure
@@ -185,8 +192,16 @@ export default {
                     this.ready = false
 
                     this.city = r.data.city
+                    document.title = r.data.city
 
-                    this.measurements.labels = r.data.history.labels
+                    this.measurements.labels = r.data.history.labels.map(r => {
+                        const date = new Date(r)
+                        if(this.range===1) {
+                            return date.getHours()
+                        }else {
+                            return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+                        }
+                    })
 
                     this.measurements.humidity = r.data.history.humidity
                     this.measurements.pressure = r.data.history.pressure

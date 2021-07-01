@@ -27,7 +27,7 @@ class MeasurementFactory extends Factory
             'temperature' => $this->faker->numberBetween(-30, 30),
             'humidity' => $this->faker->numberBetween(0, 100),
             'pressure' => $this->faker->numberBetween(980, 1050),
-            'date' => $this->faker->dateTime,
+            'date' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'sensor_id' => Sensor::all()->random()->id
         ];
     }

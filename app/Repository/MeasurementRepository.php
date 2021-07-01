@@ -28,7 +28,7 @@ class MeasurementRepository extends BaseRepository
                 DB::raw('round(avg(humidity), 2) as humidity'),
                 DB::raw('round(avg(pressure), 2) as pressure'),
                 DB::raw('round(avg(temperature), 2) as temperature'),
-                DB::raw('concat(date(date), " ", lpad(hour(date), 2, 0), "") as date'),
+                DB::raw('concat(date(date), " ", lpad(hour(date), 2, 0), ":00:00") as date'),
             ])
             ->where('sensor_id', $id)
             ->groupBy(DB::raw('date'))
